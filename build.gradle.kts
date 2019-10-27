@@ -1,25 +1,25 @@
-import com.palantir.gradle.docker.DockerExtension
-import org.jetbrains.kotlin.contracts.model.structure.UNKNOWN_COMPUTATION.type
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-buildscript {
-	dependencies {
-		classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker")
-	}
-}
 
 
 plugins {
 	id("org.springframework.boot") version "2.2.0.RELEASE"
 	id("io.spring.dependency-management") version "1.0.8.RELEASE"
+	id ("com.google.cloud.tools.jib") version ("0.9.11")
 	kotlin("jvm") version "1.3.50"
 	kotlin("plugin.spring") version "1.3.50"
 	kotlin("plugin.jpa") version "1.3.50"
-	id ("com.palantir.docker") version "0.13.0"
 }
 
-group = "com.start.up"
-version = "0.0.1-SNAPSHOT"
+springBoot {
+	buildInfo {
+		properties {
+			artifact = "project"
+			version = "0.0.1-SNAPSHOT"
+			group = "com.start.up"
+			name = "my project"
+		}
+	}
+}
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 val developmentOnly by configurations.creating
@@ -59,7 +59,6 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
-configure<DockerExtension> {
-	name = "my-app"
+tasks.jibDockerBuild {
+	setTargetImage("project")
 }
-

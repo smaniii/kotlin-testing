@@ -11,7 +11,22 @@ services:
       - MARIADB_DATABASE=docker_db
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
       - ALLOW_EMPTY_PASSWORD=yes
-
+    networks:
+      - backend
+  docker-app:
+    image: project:latest
+    depends_on:
+      - mariadb
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/docker_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+    networks:
+      - backend
 volumes:
   mariadb_data:
     driver: local
+networks:
+  backend:
