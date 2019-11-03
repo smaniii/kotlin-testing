@@ -48,7 +48,8 @@ class JWTAuthenticationFilter(
 
         val token = JWT.create()
                 .withSubject((auth.principal as User).username)
-                .withExpiresAt(Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)))
+                .withExpiresAt(Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis((env.getProperty(EnvironmentVariables.TOKEN_EXPIRE_TIME.propertyName)?.toLong())
+                        ?: 0)))
                 .sign(HMAC512(env.getProperty(EnvironmentVariables.JWT_SECRET.propertyName)))
         res.addHeader("${env.getProperty(EnvironmentVariables.AUTH_HEADER.propertyName)}",
                 "${env.getProperty(EnvironmentVariables.TOKEN_PREFIX.propertyName)} $token")
