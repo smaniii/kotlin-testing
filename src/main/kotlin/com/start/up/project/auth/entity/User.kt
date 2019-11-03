@@ -13,4 +13,6 @@ class User() {
     var username: String = ""
     @JsonIgnore
     var password: String = ""
+    @Version
+    val version: Long? = null
 }
