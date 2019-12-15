@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.stereotype.Component
+import java.io.PrintWriter
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.servlet.FilterChain
@@ -46,12 +47,19 @@ class JWTAuthenticationFilter(
                                           chain: FilterChain,
                                           auth: Authentication) {
 
-        val token = JWT.create()
+        val tokenName = env.getProperty(EnvironmentVariables.AUTH_HEADER.propertyName)
+        val token = env.getProperty(EnvironmentVariables.TOKEN_PREFIX.propertyName) + " " +
+                JWT.create()
                 .withSubject((auth.principal as User).username)
                 .withExpiresAt(Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis((env.getProperty(EnvironmentVariables.TOKEN_EXPIRE_TIME.propertyName)?.toLong())
                         ?: 0)))
                 .sign(HMAC512(env.getProperty(EnvironmentVariables.JWT_SECRET.propertyName)))
-        res.addHeader("${env.getProperty(EnvironmentVariables.AUTH_HEADER.propertyName)}",
-                "${env.getProperty(EnvironmentVariables.TOKEN_PREFIX.propertyName)} $token")
+        res.addHeader(tokenName, token)
+        val out: PrintWriter = res.writer
+        res.contentType = "application/json"
+        res.characterEncoding = "UTF-8"
+        val tokenMap = mapOf(tokenName to  token)
+        out.print(ObjectMapper().writeValueAsString(tokenMap))
+        out.flush()
     }
 }
