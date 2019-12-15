@@ -3,9 +3,10 @@ package com.start.up.project.auth.rest
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.start.up.project.auth.entity.User
 import com.start.up.project.auth.repository.UserRepository
-import junit.framework.Assert.assertEquals
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -61,10 +62,10 @@ internal class UserControllerTest {
     }
 
     @WithMockUser("not seth")
-    @Test(expected = NestedServletException::class)
+    @Test
     fun `should return invalid user when user does not exists` () {
-        mvc!!.perform(post("/users/current/user")
-                .contentType(MediaType.APPLICATION_JSON))
+        assertThrows<NestedServletException> { mvc!!.perform(post("/users/current/user")
+                .contentType(MediaType.APPLICATION_JSON)) }
     }
 
 
