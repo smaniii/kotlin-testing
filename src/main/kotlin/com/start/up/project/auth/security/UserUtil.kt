@@ -8,6 +8,6 @@ object UserUtil {
         return JWT.require(Algorithm.HMAC512(secret))
                 .build()
                 .verify(token.replace("$prefix ", ""))
-                .getSubject()
+                .subject
     }
 }

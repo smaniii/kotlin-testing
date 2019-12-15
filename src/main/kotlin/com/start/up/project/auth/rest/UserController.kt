@@ -2,11 +2,13 @@ package com.start.up.project.auth.rest
 
 import com.start.up.project.auth.entity.User
 import com.start.up.project.auth.repository.UserRepository
+import com.start.up.project.auth.security.JWTAuthenticationFilter
 import com.start.up.project.auth.security.UserUtil
 import com.start.up.project.env.EnvironmentVariables
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
+import org.springframework.security.core.Authentication
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 
@@ -14,13 +16,20 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/users")
 class UserController(private val userRepository: UserRepository,
                      private val passwordEncoder: PasswordEncoder,
-                     private  val env: Environment) {
+                     private  val env: Environment,
+                     private val jwtAuthenticationFilter: JWTAuthenticationFilter) {
     val logger: Logger = LoggerFactory.getLogger(UserRepository::class.java);
     @PostMapping("/sign-up")
     fun signUp(@RequestBody user: User) {
         logger.info("Try signing up user : {}", user.username)
         user.password = passwordEncoder.encode(user.password)
         userRepository.save(user)
+    }
+
+    @PostMapping("/login")
+    fun login(@RequestBody user: User) : Authentication? {
+        logger.info("Try to log in for user : {}", user.username)
+        return null
     }
 
     @PostMapping("/current/user")

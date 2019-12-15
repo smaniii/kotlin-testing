@@ -1,6 +1,6 @@
 package com.start.up.project.auth.entity
 
-import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.*
 
 
@@ -11,7 +11,7 @@ class User() {
     val id: Int = 0
     @Column(unique = true)
     var username: String = ""
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     var password: String = ""
     @Version
     val version: Long? = null
