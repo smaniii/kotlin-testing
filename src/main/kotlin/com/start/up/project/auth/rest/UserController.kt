@@ -11,6 +11,8 @@ import org.springframework.core.env.Environment
 import org.springframework.security.core.Authentication
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping("/users")
@@ -24,12 +26,6 @@ class UserController(private val userRepository: UserRepository,
         logger.info("Try signing up user : {}", user.username)
         user.password = passwordEncoder.encode(user.password)
         userRepository.save(user)
-    }
-
-    @PostMapping("/login")
-    fun login(@RequestBody user: User) : Authentication? {
-        logger.info("Try to log in for user : {}", user.username)
-        return null
     }
 
     @PostMapping("/current/user")

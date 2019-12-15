@@ -11,7 +11,6 @@ class WebSecurity(val jwtAuthenticationFilter: JWTAuthenticationFilter, val jwtA
     override fun configure(http: HttpSecurity) {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/users/sign-up").permitAll()
-                //.antMatchers(HttpMethod.POST, "/login").denyAll()
                 .antMatchers(HttpMethod.POST, "/users/login").permitAll()
                 .anyRequest().authenticated()
                 .and()

@@ -28,6 +28,7 @@ class JWTAuthenticationFilter(
 
     init {
         setAuthenticationManager(authManager)
+        setFilterProcessesUrl("/users/login")
     }
 
     override fun attemptAuthentication(req: HttpServletRequest,
