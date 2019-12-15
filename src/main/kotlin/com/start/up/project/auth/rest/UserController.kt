@@ -8,18 +8,14 @@ import com.start.up.project.env.EnvironmentVariables
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
-import org.springframework.security.core.Authentication
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping("/users")
 class UserController(private val userRepository: UserRepository,
                      private val passwordEncoder: PasswordEncoder,
-                     private  val env: Environment,
-                     private val jwtAuthenticationFilter: JWTAuthenticationFilter) {
+                     private val env: Environment) {
     val logger: Logger = LoggerFactory.getLogger(UserRepository::class.java);
     @PostMapping("/sign-up")
     fun signUp(@RequestBody user: User) {

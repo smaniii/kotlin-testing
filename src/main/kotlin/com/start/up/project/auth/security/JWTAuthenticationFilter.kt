@@ -51,15 +51,15 @@ class JWTAuthenticationFilter(
         val tokenName = env.getProperty(EnvironmentVariables.AUTH_HEADER.propertyName)
         val token = env.getProperty(EnvironmentVariables.TOKEN_PREFIX.propertyName) + " " +
                 JWT.create()
-                .withSubject((auth.principal as User).username)
-                .withExpiresAt(Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis((env.getProperty(EnvironmentVariables.TOKEN_EXPIRE_TIME.propertyName)?.toLong())
-                        ?: 0)))
-                .sign(HMAC512(env.getProperty(EnvironmentVariables.JWT_SECRET.propertyName)))
+                        .withSubject((auth.principal as User).username)
+                        .withExpiresAt(Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis((env.getProperty(EnvironmentVariables.TOKEN_EXPIRE_TIME.propertyName)?.toLong())
+                                ?: 0)))
+                        .sign(HMAC512(env.getProperty(EnvironmentVariables.JWT_SECRET.propertyName)))
         res.addHeader(tokenName, token)
         val out: PrintWriter = res.writer
         res.contentType = "application/json"
         res.characterEncoding = "UTF-8"
-        val tokenMap = mapOf(tokenName to  token)
+        val tokenMap = mapOf(tokenName to token)
         out.print(ObjectMapper().writeValueAsString(tokenMap))
         out.flush()
     }
