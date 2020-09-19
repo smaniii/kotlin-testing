@@ -2,10 +2,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 plugins {
-	id("org.springframework.boot") version "2.2.2.RELEASE"
+	id("org.springframework.boot") version "2.3.4.RELEASE"
 	id ("com.google.cloud.tools.jib") version ("1.8.0")
-	kotlin("jvm") version "1.3.61"
-	kotlin("plugin.spring") version "1.3.61"
+	kotlin("jvm") version "1.4.10"
+	kotlin("plugin.spring") version "1.4.10"
 }
 
 apply(plugin = "io.spring.dependency-management")
@@ -18,13 +18,6 @@ springBoot {
 			group = "com.start.up"
 			name = "my project"
 		}
-	}
-}
-
-val developmentOnly by configurations.creating
-configurations {
-	runtimeClasspath {
-		extendsFrom(developmentOnly)
 	}
 }
 
